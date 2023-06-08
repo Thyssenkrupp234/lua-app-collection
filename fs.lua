@@ -74,6 +74,7 @@ local functionTable = {
       ["13.3.1"] = true,
       ["13.4"] = true,
       ["13.5"] = true,
+      ["14.0"] = true,
     }
     if incompatibleVersions[osVersion] then
       print("\nYour macOS is NOT exploitable by MacDirtyCow, and therefore, this function is obsolete.")
