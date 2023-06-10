@@ -36,8 +36,7 @@ fileMenu:Append(wx.wxID_EXIT, "E&xit", "Quit the program")
 
 -- create a simple help menu
 local helpMenu = wx.wxMenu()
-helpMenu:Append(wx.wxID_ABOUT, "&About", "About the wxLua Minimal 
-Application")
+helpMenu:Append(wx.wxID_ABOUT, "&About", "About the wxLua Minimal Application")
 
 -- create a menu bar and append the file and help menus
 local menuBar = wx.wxMenuBar()
@@ -56,8 +55,7 @@ local button = wx.wxButton(frame, wx.wxID_ANY, "Click Me",
 
 -- create a text box
 local textBox = wx.wxTextCtrl(frame, wx.wxID_ANY, "",
-                              wx.wxDefaultPosition, wx.wxDefaultSize, 
-wx.wxTE_MULTILINE)
+                              wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE)
 
 -- create a sizer to layout the button and text box vertically
 local sizer = wx.wxBoxSizer(wx.wxVERTICAL)
@@ -70,10 +68,10 @@ frame:SetSizer(sizer)
 -- function to unlock the text box
 local function LockOrUnlockTextBox()
     local style = textBox:GetWindowStyleFlag()
-    if bit.band(style, wx.wxTE_READONLY) == wx.wxTE_READONLY then
-        style = bit.band(style, bit.bnot(wx.wxTE_READONLY))
+    if bit32.band(style, wx.wxTE_READONLY) == wx.wxTE_READONLY then
+        style = bit32.band(style, bit32.bnot(wx.wxTE_READONLY))
     else
-        style = bit.bor(style, wx.wxTE_READONLY)
+        style = bit32.bor(style, wx.wxTE_READONLY)
     end
     textBox:SetWindowStyleFlag(style)
 end
@@ -87,12 +85,8 @@ frame:Connect(button:GetId(), wx.wxEVT_COMMAND_BUTTON_CLICKED,
         textBox:SetValue(text)
 end)
 
-io.write("\27[96mmacOS: \27[92m"..osVersion.." 
-("..osBuildVer..")".."\n\27[96mScript Version: 
-\27[92m"..scriptVersion.."\n\27[96mDate: 
-\27[92m"..date.."\n\27[96mRunning as admin: 
-\27[92m"..tostring(isAdmin))
-
+io.write("\27[96mmacOS: \27[92m"..osVersion.." ("..osBuildVer..")".."\n\27[96mScript Version: \27[92m"..scriptVersion.."\n\27[96mDate: \27[92m"..date.."\n\27[96mRunning as admin: \27[92m"..tostring(isAdmin))
+LockOrUnlockTextBox()
 -- finally, show the frame window
 frame:Show(true)
 
