@@ -105,14 +105,26 @@ local functionTable = {
     io.write("Exploit ran. To check it it worked, run su in terminal.")
     io.read()
     welcomeScreen()
-  end
+  end,
+  r = function()
+    io.write("\27c")
+    if isAdmin == "yes" then
+      io.write("Script is running with elevated privilages, executing reboot command in 5 seconds...")
+      os.sleep(5)
+      os.execute("reboot")
+    else
+      io.write("Script is running non-elevated, please enter credentials if required.")
+      io.write("\n\nYou will not be able to see your password being typed.")
+      os.execute("sudo reboot")
+    end
+  end,
 }
 print("Defining welcomescreen() function")
 function welcomeScreen()
   -- clear screen then print out welcome stuff
   io.write("\27c")
   io.write("\27[96mmacOS: \27[92m"..osVersion.." ("..osBuildVer..")".."\n\27[96mScript Version: \27[92m"..scriptVersion.."\n\27[96mDate: \27[92m"..date.."\n\27[96mRunning as admin: \27[92m"..tostring(isAdmin))
-  io.write("\n\27[0m\n\nE. Exit\nS. Shut Down\n1. Gain admin via MacDirtyCow\n\nPick an option: ")
+  io.write("\n\27[0m\n\n1. Gain admin via MacDirtyCow\nE. Exit\nS. Shut Down\nR. Reboot\n\nPick an option: ")
   local response = io.read()
   if functionTable[string.lower(tostring(response))] then
     functionTable[string.lower(tostring(response))]()
