@@ -4,15 +4,10 @@
 
 local homedir = os.getenv("HOME").."/"
 local cshell = os.getenv("SHELL")
-local http = require("ssl.https")
+local http = require("socket.http")
 
 --[[
-
 Welcome to Lincoln's "useless" lua tool. this command-line tool can do lots of random things, like file delete/read/write, random numbers, randmon quotes, etc.
-
-
-
-
 ]]
 function intro()
     io.write("\27[40m")

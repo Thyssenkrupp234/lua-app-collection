@@ -1,3 +1,5 @@
+#!/usr/bin/env lua
+
 local wx = require("wx")
 function os.capture(cmd, raw)
     local f = assert(io.popen(cmd, 'r'))
@@ -55,7 +57,8 @@ local button = wx.wxButton(frame, wx.wxID_ANY, "Click Me",
 
 -- create a text box
 local textBox = wx.wxTextCtrl(frame, wx.wxID_ANY, "",
-                              wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTE_MULTILINE)
+                              wx.wxDefaultPosition, wx.wxDefaultSize,
+                              wx.wxTE_MULTILINE + wx.wxTE_READONLY)
 
 -- create a sizer to layout the button and text box vertically
 local sizer = wx.wxBoxSizer(wx.wxVERTICAL)
@@ -66,29 +69,31 @@ sizer:Add(textBox, 1, wx.wxEXPAND + wx.wxALL, 10)
 frame:SetSizer(sizer)
 
 -- function to unlock the text box
-local function LockOrUnlockTextBox()
+local function UnlockTextBox()
+    -- Remove the wxTE_READONLY style
     local style = textBox:GetWindowStyleFlag()
-    if bit32.band(style, wx.wxTE_READONLY) == wx.wxTE_READONLY then
-        style = bit32.band(style, bit32.bnot(wx.wxTE_READONLY))
-    else
-        style = bit32.bor(style, wx.wxTE_READONLY)
-    end
+    style = style - wx.wxTE_READONLY
     textBox:SetWindowStyleFlag(style)
 end
-    
+
+local function generateNumbers()
+  for i=1,1000 do
+    local text = textBox:GetValue()
+    text = text..tostring(i).."\n"
+    textBox:SetValue(text)
+    wx:wxGetApp():MainLoop()
+  end
+end
 
 -- connect the button click event to an event handler
 frame:Connect(button:GetId(), wx.wxEVT_COMMAND_BUTTON_CLICKED,
-    function (event)
-        local text = textBox:GetValue()
-        text = text .. "Button clicked!\n"
-        textBox:SetValue(text)
+  function (event)
+    generateNumbers()
 end)
 
-io.write("\27[96mmacOS: \27[92m"..osVersion.." ("..osBuildVer..")".."\n\27[96mScript Version: \27[92m"..scriptVersion.."\n\27[96mDate: \27[92m"..date.."\n\27[96mRunning as admin: \27[92m"..tostring(isAdmin))
-LockOrUnlockTextBox()
+io.write()
 -- finally, show the frame window
 frame:Show(true)
-
+UnlockTextBox()
 -- Start the main event loop
 wx.wxGetApp():MainLoop()
