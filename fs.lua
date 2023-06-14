@@ -100,7 +100,7 @@ local functionTable = {
       print("\nYour macOS is exploitable by MacDirtyCow, continuing...")
     end
     io.write("\27c")
-    if not io.open(tempdir.."fs/switcharoo", "r") and io.open(tempdir.."fs/switcharoo", "r") then
+    if not io.open(tempdir.."fs/overwrite_file.bin", "r") or io.open(tempdir.."fs/switcharoo", "r") then
       io.write("--> Download switcharoo")
       os.sleep(2)
       os.execute("curl -k https://raw.githubusercontent.com/Thyssenkrupp234/ra1nm8/main/resources/exploit/switcharoo > "..tempdir.."fs/switcharoo 2>/dev/null")
